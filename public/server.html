@@ -1,0 +1,50 @@
+<html>
+<head>
+	<title>RemoteWebEvent Server Sample</title>
+</head>
+<body>
+	<script type="text/javascript" src="js/jquery/jquery-1.4.3.min.js"></script>
+	<!-- To get socket.io from cdn -->
+	<script src="http://cdn.socket.io/stable/socket.io.js"></script>
+	<script src="recver.js"></script>
+<script>
+jQuery(function(){
+	/**
+	 * Parse args in the url variables form key1=val1&key2=val2
+	*/
+	var parseArgs	= function(str){
+		var args	= {}
+		var tmp		= str.split('&')
+		for(var i = 0; i < tmp.length; i++){
+			var item= tmp[i]; 
+			var arr	= item.split("=");
+			if( arr.length != 2 )	return args;
+			args[arr[0]]	= unescape(arr[1]);
+		}
+		return args;
+	}
+	// parse the hashArgs
+	var hashArgs	= parseArgs(document.location.hash.substring(1));
+	// set default values if needed
+	hashArgs.srvHost= hashArgs.srvHost	|| "localhost";
+	hashArgs.srvPort= hashArgs.srvPort	|| 8080;
+	hashArgs.uuid	= hashArgs.uuid		|| "blabla";
+	
+	var recver	= new RemoteWebEvents.Recver({
+		srvHost	: hashArgs.srvHost,
+		srvPort	: hashArgs.srvPort,
+		uuid	: hashArgs.uuid,
+		callback: function(eventType, eventData){
+			if( eventType == "connect" ){
+				console.log("server connected")
+			}else if( eventType == "message" ){
+				console.log("callback message", eventData);
+			}else if( eventType == "disconnect" ){
+				console.log("PANIC server disconnect");				
+			}
+		}
+	});
+});
+</script>	
+</body>
+</html>

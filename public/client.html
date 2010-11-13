@@ -1,0 +1,44 @@
+<html>
+<head>
+	<title>RemoteWebEvent Client Sample</title>
+</head>
+<body>
+	click anywhere in the page
+	<script type="text/javascript" src="js/jquery/jquery-1.4.3.min.js"></script>
+	<script src="xmiter.js"></script>
+<script>
+jQuery(function(){
+	/**
+	 * Parse args in the url variables form key1=val1&key2=val2
+	*/
+	var parseArgs	= function(str){
+		var args	= {}
+		var tmp		= str.split('&')
+		for(var i = 0; i < tmp.length; i++){
+			var item= tmp[i]; 
+			var arr	= item.split("=");
+			if( arr.length != 2 )	return args;
+			args[arr[0]]	= unescape(arr[1]);
+		}
+		return args;
+	}
+	// parse the hashArgs
+	var hashArgs	= parseArgs(document.location.hash.substring(1));
+	// set default values if needed
+	hashArgs.destUrl= hashArgs.destUrl || "http://192.168.0.11:8081";
+	hashArgs.msgDest= hashArgs.msgDest || "blabla";
+	// initiale the xmiter
+	var xmiter	= new RemoteWebEvents.Xmiter({
+		destUrl	: hashArgs.destUrl
+	});
+	// every time a click is done, xmit a message
+	jQuery("body").click(function(event){
+		var msgData	= "dummyMsg at "+(new Date()).toString()
+		var msgDest	= hashArgs.msgDest;
+		xmiter.send(msgDest, msgData);
+		event.stopPropagation();
+	});
+});
+</script>
+</body>
+</html>
