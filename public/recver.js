@@ -13,7 +13,7 @@ RemoteWebEvents.Recver	= function(ctor_opts){
 	//		class variables						//
 	//////////////////////////////////////////////////////////////////////////
 	// copy ctor_opts + set default values if needed
-	this.srvHost	= ctor_opts.srvname	|| console.assert(false);
+	this.srvHost	= ctor_opts.srvHost	|| console.assert(false);
 	this.srvPort	= ctor_opts.srvPort	|| console.assert(false);
 	this.callback	= ctor_opts.callback	|| console.assert(false);
 	this.uuid	= ctor_opts.uuid	|| this._generateUUID();
@@ -58,7 +58,7 @@ RemoteWebEvents.Recver.prototype.socketCtor	= function(){
 	this.socket.on('connect', function(){
 		// log to debug
 		console.log("Websocket Connected to server");
-		console.dir(self.socket)
+		//console.dir(self.socket)
 		// send the connect_msg
 		self.socket.send({
 			type	: "connect",
@@ -70,17 +70,17 @@ RemoteWebEvents.Recver.prototype.socketCtor	= function(){
 		self._notify("connect");
 	});
 	this.socket.on('message', function(mesg){
-		console.log("received message", mesg);
+		//console.log("received message", mesg);
 		self._notify("message", mesg)
 	})
 	this.socket.on('disconnect', function(){
-		console.log("disconnected server");
+		//console.log("disconnected server");
 		self._notify("disconnect");
 	})
 	this.socket.connect();	
 }
 
 RemoteWebEvents.Recver.prototype.socketDtor	= function(){
-	console.assert(false);
+	//console.assert(false);
 }
 
