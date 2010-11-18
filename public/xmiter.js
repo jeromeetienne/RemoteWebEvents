@@ -22,6 +22,5 @@ RemoteWebEvents.Xmiter.prototype.send	= function(msgDest, msgData, succeedCb){
 	url	+= "&nocache="+Math.random()+(new Date()).getTime();
 	url	+= "&callback=?";
 	jQuery.getJSON(url, succeedCb);
-	console.log("rout");
 }
 

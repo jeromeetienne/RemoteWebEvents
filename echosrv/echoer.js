@@ -183,6 +183,7 @@ io_listener.on('connection', function(ioClient){
 	recvers.push(ioClient);
 });
 
+console.log("socket.io is listening on "+cmdline_opts.socketPort)
 
 //////////////////////////////////////////////////////////////////////////////////
 //		xmiter Reception						//
@@ -218,3 +219,4 @@ http.createServer(function(request, response){
 	response.end(query.callback+'(true);');
 }).listen(cmdline_opts.xmiterPort);
 
+console.log("xmiter event is listening on "+cmdline_opts.xmiterPort)

@@ -1,0 +1,65 @@
+<!DOCTYPE html> 
+<html> 
+	<head> 
+	<title>Remote control for MyLiveShow</title> 
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0a1/jquery.mobile-1.0a1.min.css" />
+	<script src="http://code.jquery.com/jquery-1.4.3.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.0a1/jquery.mobile-1.0a1.min.js"></script>
+	<script src="xmiter.js"></script>
+</head> 
+<body>
+<div data-role="page">
+	<div data-role="header">
+		<h1>MyLifeShow Remote</h1>
+	</div><!-- /header -->
+
+	<div data-role="content">
+		<div data-role="controlgroup">
+			<a href="#" data-role="button">Next</a>
+			<a href="#" data-role="button">Prev</a>
+			<a href="#" data-role="button">Start</a>
+			<a href="#" data-role="button">Stop</a>
+		</div>
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4>Cybronics</h4>
+	</div><!-- /header -->
+</div><!-- /page -->
+
+<script>
+jQuery(function(){
+	/**
+	 * Parse args in the url variables form key1=val1&key2=val2
+	*/
+	var parseArgs	= function(str){
+		var args	= {}
+		var tmp		= str.split('&')
+		for(var i = 0; i < tmp.length; i++){
+			var item= tmp[i]; 
+			var arr	= item.split("=");
+			if( arr.length != 2 )	return args;
+			args[arr[0]]	= unescape(arr[1]);
+		}
+		return args;
+	}
+	// parse the hashArgs
+	var hashArgs	= parseArgs(document.location.hash.substring(1));
+	// set default values if needed
+	hashArgs.destUrl= hashArgs.destUrl || "http://192.168.0.11:8081";
+	hashArgs.msgDest= hashArgs.msgDest || "blabla";
+	// initiale the xmiter
+	var xmiter	= new RemoteWebEvents.Xmiter({
+		destUrl	: hashArgs.destUrl
+	});
+	// every time a click is done, xmit a message
+	jQuery("div[data-role='content'] a[data-role='button']").click(function(event){
+		var msgData	= event.target.innerText.toLowerCase();
+		var msgDest	= hashArgs.msgDest;
+		xmiter.send(msgDest, msgData);
+		event.stopPropagation();
+	});
+});
+</script>
+</body>
+</html>
