@@ -1,3 +1,5 @@
+*OBSOLETE* EasyWebSocket make this one oboslete
+
 To update/init all the dependancies
 
 $ sh deps.sh
